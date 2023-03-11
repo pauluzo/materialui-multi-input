@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Downshift from "downshift";
+import { FormControl, Input } from "@mui/material";
 
 export default function TagsInput({ ...props }) {
   const { selectedTags, placeholder, tags, ...other } = props;
@@ -73,6 +74,20 @@ export default function TagsInput({ ...props }) {
           });
           return (
             <div>
+              <FormControl>
+                <div className="container">
+                  {selectedItem.map((item, index) => (
+                    <Chip
+                      key={index}
+                      size="small"
+                      onDelete={handleDelete(item)}
+                      label={item}
+                    />
+                  ))}
+                </div>
+                <Input />
+              </FormControl>
+
               {/* @ts-expect-error */}
               <TextField
                 InputProps={{

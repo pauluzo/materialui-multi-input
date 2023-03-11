@@ -2,6 +2,7 @@ import "./App.css";
 import TagsInput from "./Example";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/styles";
+import TagInput from "./TagInput";
 
 const App = () => {
   const theme = createTheme();
@@ -17,15 +18,8 @@ const App = () => {
           padding: "20px",
         }}
       >
-        <div
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-          Tags input example. Testing starts...
-        </div>
         <div>
-          <TagsInput
+          {/* <TagsInput
             selectedTags={handleSelecetedTags}
             fullWidth
             variant="outlined"
@@ -33,7 +27,8 @@ const App = () => {
             name="tags"
             placeholder="add Tags"
             label="tags"
-          />
+          /> */}
+          <TagInput />
         </div>
       </div>
     </ThemeProvider>

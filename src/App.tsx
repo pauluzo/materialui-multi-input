@@ -3,12 +3,15 @@ import TagsInput from "./Example";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/styles";
 import TagInput from "./TagInput";
+import { useState } from "react";
 
 const App = () => {
   const theme = createTheme();
+  const [tags, setTags] = useState(["Tags1", "Tags2"]);
 
   function handleSelecetedTags(items: any) {
-    console.log(items);
+    console.log("Handle selected items is called: ", items);
+    setTags(items);
   }
   return (
     <ThemeProvider theme={theme}>
@@ -28,7 +31,11 @@ const App = () => {
             placeholder="add Tags"
             label="tags"
           /> */}
-          <TagInput />
+          <TagInput
+            setUserTags={handleSelecetedTags}
+            userTags={tags}
+            initialValue="The initial value"
+          />
         </div>
       </div>
     </ThemeProvider>

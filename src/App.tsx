@@ -32,9 +32,9 @@ const App = () => {
             label="tags"
           /> */}
           <TagInput
-            setUserTags={handleSelecetedTags}
-            userTags={tags}
-            initialValue="The initial value"
+            setTags={handleSelecetedTags}
+            tags={tags}
+            inputValue="The initial value"
           />
         </div>
       </div>

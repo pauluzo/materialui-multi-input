@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useStyles } from "./style";
 
 export default function TagInput({ ...props }) {
-  const { userTags, setUserTags, initialValue = "" } = props;
+  const { tags, setTags, inputValue: initialValue = "" } = props;
   const classes = useStyles();
-  const [tags, setTags] = useState(userTags as string[]);
+  const [userTags, setUserTags] = useState(tags as string[]);
   const [inputValue, setInputValue] = useState(initialValue);
 
   useEffect(() => {
@@ -14,12 +14,11 @@ export default function TagInput({ ...props }) {
   }, [tags]);
 
   const handleDelete = (index: number) => {
-    setTags((prevState) => {
-      const arr = [...prevState];
-      arr.splice(index, 1);
+    const newArray = [...userTags];
+    newArray.splice(index, 1);
 
-      return arr;
-    });
+    setUserTags(newArray);
+    setTags(newArray);
   };
 
   const handleChange = (
@@ -35,7 +34,7 @@ export default function TagInput({ ...props }) {
 
     // If the enter key is clicked on
     if (e.key === "Enter" && value) {
-      const duplicate = tags.indexOf(value.trim());
+      const duplicate = userTags.indexOf(value.trim());
 
       if (duplicate !== -1) {
         setInputValue("");
@@ -45,18 +44,18 @@ export default function TagInput({ ...props }) {
       if (!value.replace(/\s/g, "").length) return;
 
       e.persist();
-      const newList = [...tags];
+      const newList = [...userTags];
       newList.push(value.trim());
+      console.log("New list", newList);
+      setUserTags(newList);
       setTags(newList);
       setInputValue("");
-      console.log("New list", tags);
     }
 
     // If the backspace key is clicked on
-    if (tags.length && !value.length && e.key === "Backspace") {
-      let newTags = [...tags];
-      newTags.pop();
-      setTags(newTags);
+    if (userTags.length && !value.length && e.key === "Backspace") {
+      let index = userTags.length - 1;
+      handleDelete(index);
     }
   };
 
@@ -64,7 +63,7 @@ export default function TagInput({ ...props }) {
     <div>
       <FormControl classes={{ root: classes.formControlRoot }}>
         <div className={classes.rootContainer}>
-          {tags.map((item: string, index: number) => (
+          {userTags.map((item: string, index: number) => (
             <Chip
               key={index}
               size="small"

@@ -21,7 +21,6 @@ export default function TagInput() {
 
   const handleKeyDown = (e: any) => {
     const { value } = e.target;
-    console.log(e.key, value);
 
     if (e.key === "Enter" && value) {
       e.persist();

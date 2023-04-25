@@ -3,14 +3,20 @@ import { useEffect, useState } from "react";
 import { useStyles } from "./style";
 
 export default function TagInput({ ...props }) {
-  const { tags, setTags, inputValue: initialValue = "" } = props;
+  const {
+    tags,
+    setTags,
+    initialValue = "",
+    onBlur = null,
+    onFocus = null,
+    innerRef = null,
+  } = props;
   const classes = useStyles();
   const [userTags, setUserTags] = useState(tags as string[]);
   const [inputValue, setInputValue] = useState(initialValue);
 
   useEffect(() => {
     setUserTags(tags);
-    console.log("This useEffect is called: ", tags);
   }, [tags]);
 
   const handleDelete = (index: number) => {
@@ -46,7 +52,6 @@ export default function TagInput({ ...props }) {
       e.persist();
       const newList = [...userTags];
       newList.push(value.trim());
-      console.log("New list", newList);
       setUserTags(newList);
       setTags(newList);
       setInputValue("");
@@ -76,6 +81,9 @@ export default function TagInput({ ...props }) {
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          inputRef={innerRef}
         />
       </FormControl>
     </div>

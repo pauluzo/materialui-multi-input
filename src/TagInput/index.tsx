@@ -2,7 +2,7 @@ import { Chip, FormControl, Input } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useStyles } from "./style";
 
-export default function TagInput({ ...props }) {
+export default function TagInput(props: any) {
   const {
     tags,
     setTags,
@@ -10,6 +10,12 @@ export default function TagInput({ ...props }) {
     onBlur = null,
     onFocus = null,
     innerRef = null,
+    CustomInput = null,
+    CustomChip = null,
+    inputProps = {},
+    chipProps = {},
+    allowBackspace = false,
+    allowDuplicate = false,
   } = props;
   const classes = useStyles();
   const [userTags, setUserTags] = useState(tags as string[]);
@@ -31,7 +37,6 @@ export default function TagInput({ ...props }) {
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { value } = e.target;
-
     setInputValue(value);
   };
 
@@ -42,7 +47,7 @@ export default function TagInput({ ...props }) {
     if (e.key === "Enter" && value) {
       const duplicate = userTags.indexOf(value.trim());
 
-      if (duplicate !== -1) {
+      if (!allowDuplicate && duplicate !== -1) {
         setInputValue("");
         return;
       }
@@ -58,7 +63,12 @@ export default function TagInput({ ...props }) {
     }
 
     // If the backspace key is clicked on
-    if (userTags.length && !value.length && e.key === "Backspace") {
+    if (
+      !allowBackspace &&
+      userTags.length &&
+      !value.length &&
+      e.key === "Backspace"
+    ) {
       let index = userTags.length - 1;
       handleDelete(index);
     }
@@ -68,23 +78,45 @@ export default function TagInput({ ...props }) {
     <div>
       <FormControl classes={{ root: classes.formControlRoot }}>
         <div className={classes.rootContainer}>
-          {userTags.map((item: string, index: number) => (
-            <Chip
-              key={index}
-              size="small"
-              onDelete={() => handleDelete(index)}
-              label={item}
-            />
-          ))}
+          {userTags.map((item: string, index: number) =>
+            CustomChip ? (
+              <CustomChip
+                key={index}
+                size="small"
+                onDelete={() => handleDelete(index)}
+                label={item}
+              />
+            ) : (
+              <Chip
+                key={index}
+                size="small"
+                onDelete={() => handleDelete(index)}
+                label={item}
+                {...chipProps}
+              />
+            )
+          )}
         </div>
-        <Input
-          value={inputValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          inputRef={innerRef}
-        />
+        {CustomInput ? (
+          <CustomInput
+            value={inputValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            inputRef={innerRef}
+          />
+        ) : (
+          <Input
+            value={inputValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            inputRef={innerRef}
+            {...inputProps}
+          />
+        )}
       </FormControl>
     </div>
   );

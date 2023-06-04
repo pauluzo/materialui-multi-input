@@ -41,6 +41,7 @@ export default function TagsInput({ ...props }) {
       setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
     }
   }
+
   function handleChange(item: any) {
     let newSelectedItem: any = [...selectedItem];
     if (newSelectedItem.indexOf(item) === -1) {

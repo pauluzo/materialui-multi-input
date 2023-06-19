@@ -1,14 +1,13 @@
 import "./App.css";
-import TagsInput from "./Example";
 import { Button, Chip, Input, createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/styles";
-import TagInput from "./TagInput";
+import TagInput, { InputInterface } from "./TagInput";
 import { useEffect, useRef, useState } from "react";
 import { useStyles } from "./appStyle";
 
 const App = () => {
   const theme = createTheme();
-  const [tags, setTags] = useState(["Tags1", "Tags2"]);
+  const [tags, setTags] = useState(["Tags1", "Tags2", 15, 243]);
   const inputForwardRef: any = useRef(null);
   const classes = useStyles();
 
@@ -39,7 +38,7 @@ const App = () => {
     onBlur,
     onFocus,
     inputRef,
-  }: any) => (
+  }: InputInterface) => (
     <input
       value={value}
       onChange={onChange}
@@ -57,22 +56,11 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <div
-        className="App"
         style={{
           padding: "20px",
         }}
       >
         <div>
-          {/* <TagsInput
-            selectedTags={handleSelecetedTags}
-            fullWidth
-            variant="outlined"
-            id="tags"
-            name="tags"
-            placeholder="add Tags"
-            label="tags"
-          /> */}
-
           <TagInput
             setTags={handleSelecetedTags}
             tags={tags}

@@ -1,24 +1,55 @@
 import { Chip, FormControl, Input } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStyles } from "./style";
 
-export default function TagInput(props: any) {
+export interface InputInterface {
+  value: string | number;
+  inputRef?: React.Ref<any>;
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+}
+
+export interface ChipInterface {
+  size: string;
+  key?: React.Key | null;
+  onDelete: (event: any) => void;
+  label: React.ReactNode;
+}
+
+interface TagInterface {
+  tags: (string | number)[];
+  setTags: (items: (string | number)[]) => void;
+  initialValue?: string | number;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  innerRef?: React.Ref<any> | undefined;
+  CustomInput?: React.FunctionComponent<InputInterface>;
+  CustomChip?: React.FunctionComponent<ChipInterface>;
+  inputProps?: Record<string, any>;
+  chipProps?: Record<string, any>;
+  allowBackspace?: Boolean;
+  allowDuplicate?: Boolean;
+}
+
+export default function TagInput(props: TagInterface) {
   const {
     tags,
     setTags,
     initialValue = "",
-    onBlur = null,
-    onFocus = null,
+    onBlur,
+    onFocus,
     innerRef = null,
-    CustomInput = null,
-    CustomChip = null,
+    CustomInput,
+    CustomChip,
     inputProps = {},
     chipProps = {},
     allowBackspace = false,
     allowDuplicate = false,
   } = props;
   const classes = useStyles();
-  const [userTags, setUserTags] = useState(tags as string[]);
+  const [userTags, setUserTags] = useState(tags as (string | number)[]);
   const [inputValue, setInputValue] = useState(initialValue);
 
   useEffect(() => {
@@ -78,7 +109,7 @@ export default function TagInput(props: any) {
     <div>
       <FormControl classes={{ root: classes.formControlRoot }}>
         <div className={classes.rootContainer}>
-          {userTags.map((item: string, index: number) =>
+          {userTags.map((item, index: number) =>
             CustomChip ? (
               <CustomChip
                 key={index}
